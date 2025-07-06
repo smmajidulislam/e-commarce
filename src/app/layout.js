@@ -5,6 +5,7 @@ import Nav from "./components/global/Nav";
 import ReduxProvider from "./components/global/ReduxProvider";
 import AuthProvider from "./hooks/UseAuth";
 import Footer from "./components/global/Footer";
+import PaymentProvider from "./hooks/usePayment";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +37,11 @@ export default function RootLayout({ children }) {
       >
         <ReduxProvider>
           <AuthProvider>
-            <Nav />
-            {children}
-            <Footer />
+            <PaymentProvider>
+              <Nav />
+              {children}
+              <Footer />
+            </PaymentProvider>
           </AuthProvider>
         </ReduxProvider>
       </body>

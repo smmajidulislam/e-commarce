@@ -1,8 +1,25 @@
 @import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1b1b3d; /* ডার্ক নেভি ব্লু - মিস্টিরিয়াস ও এলেগ্যান্ট */
+  --foreground: #f7c59f; /* সোফিস্টিকেটেড গোল্ডেন পিচ - চকচকে ও আকর্ষণীয় */
+}
+.input {
+  @apply px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black w-full sm:w-auto;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-lg font-semibold transition duration-200 hover:opacity-90;
+}
+/* globals.css বা layout.css ফাইলে */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 @theme inline {
@@ -14,8 +31,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #30305a;
+    --foreground: #f7c59f;
   }
 }
 

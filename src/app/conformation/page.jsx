@@ -1,6 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useConfirmCodeMutation } from "../features/auth/authApi";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CodeConfirmationPage = () => {
   const {
@@ -8,10 +11,25 @@ const CodeConfirmationPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [confirmCode] = useConfirmCodeMutation();
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const queryEmail = searchParams.get("email");
+    if (queryEmail) setEmail(queryEmail);
+  }, []);
 
-  const onSubmit = (data) => {
-    console.log("Code submitted:", data.code);
-    // API কল বা ভেরিফিকেশন লজিক এখানে করবেন
+  const onSubmit = async (data) => {
+    const res = await confirmCode({
+      email,
+      code: data.code,
+    }).unwrap();
+    if (res?.message === "Code confirmed successfully") {
+      router.push(`/resetPassword?email=${email}`);
+    } else {
+      alert(res?.data?.message);
+    }
   };
 
   return (

@@ -1,6 +1,8 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useForgotPasswordMutation } from "../features/auth/authApi";
+import { useRouter } from "next/navigation";
 
 const ForgotPasswordPage = () => {
   const {
@@ -8,10 +10,16 @@ const ForgotPasswordPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+  const [forgotPassword] = useForgotPasswordMutation();
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log("Reset password for:", data.email);
-    // এখানে password reset API কল করবেন
+  const onSubmit = async (data) => {
+    const res = await forgotPassword({ email: data.email }).unwrap();
+    if (res?.message === "Code sent successfully") {
+      router.push(`/conformation?email=${data.email}`);
+    } else {
+      alert(res?.message);
+    }
   };
 
   return (

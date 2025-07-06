@@ -9,7 +9,7 @@ const productApi = createApi({
   tagTypes: ["Product"],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ category, minPrice, maxPrice, sold, latest }) => {
+      query: ({ category, minPrice, maxPrice, sold, latest, page, limit }) => {
         const params = new URLSearchParams();
 
         if (category) params.append("category", category);
@@ -17,6 +17,8 @@ const productApi = createApi({
         if (maxPrice) params.append("maxPrice", maxPrice);
         if (sold) params.append("sold", sold);
         if (latest) params.append("latest", latest);
+        if (page) params.append("page", page);
+        if (limit) params.append("limit", limit);
 
         return `/product?${params.toString()}`;
       },
@@ -36,7 +38,7 @@ const productApi = createApi({
       invalidatesTags: ["Product"],
     }),
     updateProduct: builder.mutation({
-      query: ({ id, data }) => ({
+      query: ({ id, ...data }) => ({
         url: `/product/${id}`,
         method: "PUT",
         body: data,

@@ -8,8 +8,26 @@ const orderApi = createApi({
   }),
   tagTypes: ["Order"],
   endpoints: (builder) => ({
+    getAllOrders: builder.query({
+      query: () => "/order/admin",
+      providesTags: ["Order"],
+    }),
     getOrders: builder.query({
-      query: () => "/order",
+      query: ({ page = 1, limit = 10, user }) => {
+        // URL query parameters তৈরি করছি
+        const params = new URLSearchParams();
+
+        params.append("page", page);
+        params.append("limit", limit);
+        if (user) {
+          params.append("user", user);
+        }
+
+        return {
+          url: `/order?${params.toString()}`,
+          method: "GET",
+        };
+      },
       providesTags: ["Order"],
     }),
     getOrderById: builder.query({
@@ -44,9 +62,11 @@ const orderApi = createApi({
 
 export const {
   useGetOrdersQuery,
+  useGetAllOrdersQuery,
   useGetOrderByIdQuery,
   useCreateOrderMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useLazyGetOrderByIdQuery,
 } = orderApi;
 export default orderApi;

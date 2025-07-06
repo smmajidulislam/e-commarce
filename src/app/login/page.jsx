@@ -22,9 +22,10 @@ const LoginPage = () => {
       const res = await login(data).unwrap();
       if (res?.ok) {
         router.push("/");
-        console.log(res);
         if (data?.remember) {
-          savetoken(res?.data);
+          savetoken(res?.data, true);
+        } else {
+          savetoken(res?.data, false);
         }
       }
     } catch (err) {

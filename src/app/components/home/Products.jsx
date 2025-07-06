@@ -1,14 +1,20 @@
 "use client";
 import ProductCard from "./Product";
+import Skeletons from "../global/Skeletons";
 import { useGetProductsQuery } from "../../features/product/productApi";
 
 const Products = () => {
-  const { data, isLoading, error } = useGetProductsQuery({ sold: true });
+  const { data, isLoading } = useGetProductsQuery({ sold: true });
+
   return (
-    <div className="flex flex-wrap justify-center gap-2 px-2 py-6">
-      {data?.data?.map((product) => (
-        <ProductCard key={product._id} product={product} />
-      ))}
+    <div className="flex flex-wrap justify-center gap-4 px-4 py-8  min-h-screen">
+      {isLoading ? (
+        <Skeletons quantity={8} />
+      ) : (
+        data?.data?.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))
+      )}
     </div>
   );
 };
